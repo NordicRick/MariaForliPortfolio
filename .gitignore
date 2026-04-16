@@ -14,6 +14,9 @@ yarn.lock
 # macOS
 .DS_Store
 
-# PDFs and large assets (optional)
-# pdf_previews/
-# projects/
+#PDFs and large assets (optional)
+#pdf_previews/
+projects/
+screenshot.mjs
+serve.mjs
+CLAUDE.md 
