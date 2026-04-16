@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maria Førli Design — UI Designer</title>
+  <meta name="description" content="Maria Førli is a UI designer creating clean, joyful, and accessible digital experiences. Fresh Noroff graduate based in Norway.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      --coral:       #E06B6E;
+      --coral-light: #F2A09C;
+      --coral-dark:  #B84E52;
+      --cream:       #FBF6F0;
+      --warm-white:  #FEFCFB;
+      --bg-section:  #F5EDE6;
+      --charcoal:    #1C1917;
+      --warm-mid:    #6B5A54;
+      --warm-light:  #A8948C;
+      --mauve-dark:  #3D2832;
+      --gold:        #E8B86A;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--charcoal);
+      background: var(--warm-white);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Grain texture */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='512' height='512' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+    }
+
+    .font-display { font-family: 'Playfair Display', serif; }
+
+    /* Fade-up animation */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.75s cubic-bezier(0.16,1,0.3,1), transform 0.75s cubic-bezier(0.16,1,0.3,1);
+    }
+    .fade-up.in { opacity: 1; transform: translateY(0); }
+    .d1 { transition-delay: 0.08s; }
+    .d2 { transition-delay: 0.16s; }
+    .d3 { transition-delay: 0.24s; }
+    .d4 { transition-delay: 0.32s; }
+
+    /* Gradient text */
+    .grad-text {
+      background: linear-gradient(125deg, var(--coral) 0%, var(--gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Section label */
+    .sec-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--coral);
+      margin-bottom: 20px;
+    }
+    .sec-label::before {
+      content: '';
+      display: block;
+      width: 28px;
+      height: 1.5px;
+      background: var(--coral);
+      flex-shrink: 0;
+    }
+    .sec-label.gold {
+      color: var(--gold);
+    }
+    .sec-label.gold::before { background: var(--gold); }
+
+    /* Nav */
+    #nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 500;
+      padding: 18px 48px;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+    #nav.scrolled {
+      background: rgba(254,252,251,0.94);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 1px 0 rgba(28,25,23,0.07), 0 4px 20px rgba(224,107,110,0.06);
+    }
+    .nav-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo { height: 44px; width: auto; }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--warm-mid);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .nav-links a:hover { color: var(--coral); }
+
+    /* Buttons */
+    .btn-coral {
+      background: var(--coral);
+      color: #fff;
+      border: none;
+      padding: 13px 28px;
+      border-radius: 100px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(224,107,110,0.35), 0 1px 3px rgba(224,107,110,0.2);
+      transition: background 0.2s ease, transform 0.25s cubic-bezier(0.16,1,0.3,1), box-shadow 0.25s cubic-bezier(0.16,1,0.3,1);
+    }
+    .btn-coral:hover {
+      background: var(--coral-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(224,107,110,0.42), 0 2px 6px rgba(224,107,110,0.2);
+    }
+    .btn-coral:active { transform: translateY(0); }
+    .btn-coral:focus-visible { outline: 3px solid rgba(224,107,110,0.5); outline-offset: 2px; }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--charcoal);
+      border: 1.5px solid rgba(28,25,23,0.18);
+      padding: 12px 28px;
+      border-radius: 100px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease, transform 0.25s cubic-bezier(0.16,1,0.3,1);
+    }
+    .btn-ghost:hover {
+      border-color: var(--coral);
+      color: var(--coral);
+      background: rgba(224,107,110,0.04);
+      transform: translateY(-2px);
+    }
+    .btn-ghost:active { transform: translateY(0); }
+    .btn-ghost:focus-visible { outline: 3px solid rgba(224,107,110,0.4); outline-offset: 2px; }
+
+    /* ======== HERO ======== */
+    #home {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 100px 48px 80px;
+      background: linear-gradient(155deg, #FEFCFB 0%, #FBF6F0 45%, #F7EFE8 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    #home .blob1 {
+      position: absolute;
+      top: 5%;
+      right: 2%;
+      width: 560px;
+      height: 560px;
+      background: radial-gradient(circle, rgba(224,107,110,0.13) 0%, transparent 68%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    #home .blob2 {
+      position: absolute;
+      bottom: 10%;
+      left: 4%;
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(232,184,106,0.11) 0%, transparent 68%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 480px;
+      gap: 80px;
+      align-items: center;
+    }
+    .hero-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(58px, 6vw, 88px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.04;
+      color: var(--charcoal);
+      margin-bottom: 24px;
+    }
+    .hero-sub {
+      font-size: 18px;
+      line-height: 1.75;
+      color: var(--warm-mid);
+      max-width: 480px;
+      margin-bottom: 36px;
+    }
+    .hero-stats {
+      display: flex;
+      gap: 32px;
+      margin-top: 48px;
+      align-items: center;
+    }
+    .hero-stat-divider {
+      width: 1px;
+      height: 40px;
+      background: rgba(28,25,23,0.12);
+    }
+    .hero-stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--coral);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .hero-stat-label {
+      font-size: 12px;
+      color: var(--warm-light);
+      font-weight: 500;
+    }
+
+    /* Hero photo */
+    .hero-photo-wrap {
+      position: relative;
+    }
+    .hero-photo-bg {
+      position: absolute;
+      inset: -20px;
+      background: conic-gradient(from 0deg at 50% 50%, rgba(224,107,110,0.12), rgba(232,184,106,0.12), rgba(242,160,156,0.10), rgba(224,107,110,0.12));
+      border-radius: 36px;
+      z-index: 0;
+    }
+    .hero-photo-img {
+      position: relative;
+      z-index: 1;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 24px 72px rgba(28,25,23,0.14), 0 4px 16px rgba(28,25,23,0.08);
+    }
+    .hero-photo-img img {
+      width: 100%;
+      height: 520px;
+      object-fit: cover;
+      display: block;
+    }
+    .hero-photo-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(224,107,110,0) 55%, rgba(61,40,50,0.28) 100%);
+      mix-blend-mode: multiply;
+    }
+    .hero-badge {
+      position: absolute;
+      bottom: 28px;
+      right: -20px;
+      background: white;
+      border-radius: 18px;
+      padding: 14px 22px;
+      box-shadow: 0 8px 36px rgba(28,25,23,0.13), 0 2px 6px rgba(28,25,23,0.06);
+      z-index: 2;
+      white-space: nowrap;
+    }
+    .hero-badge-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--charcoal);
+    }
+    .hero-badge-sub {
+      font-size: 11px;
+      color: var(--warm-light);
+      margin-top: 3px;
+    }
+
+    /* ======== ABOUT ======== */
+    #about {
+      padding: 120px 48px;
+      background: linear-gradient(145deg, #3D2832 0%, #2A1E22 55%, #1E161A 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    #about .a-blob {
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 480px; height: 480px;
+      background: radial-gradient(circle, rgba(224,107,110,0.07) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    #about .a-blob2 {
+      position: absolute;
+      bottom: -60px; left: -60px;
+      width: 360px; height: 360px;
+      background: radial-gradient(circle, rgba(232,184,106,0.05) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .about-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 80px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    .about-body { font-size: 16px; line-height: 1.8; color: rgba(255,255,255,0.72); margin-bottom: 20px; }
+    .about-body strong { color: white; font-weight: 600; }
+
+    .skill-chip {
+      display: inline-block;
+      padding: 8px 18px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.14);
+      color: rgba(255,255,255,0.88);
+      margin: 4px;
+    }
+
+    .about-photo {
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 28px 72px rgba(0,0,0,0.45);
+    }
+    .about-photo img {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+      display: block;
+      filter: saturate(0.8) brightness(0.95);
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 20px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      text-decoration: none;
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background 0.2s ease;
+      margin-top: 10px;
+    }
+    .contact-row:hover { background: rgba(255,255,255,0.11); }
+    .contact-row:focus-visible { outline: 3px solid rgba(232,184,106,0.5); outline-offset: 2px; }
+    .contact-row-icon {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--gold);
+    }
+
+    /* ======== WORK ======== */
+    #work {
+      padding: 120px 48px;
+      background: var(--cream);
+    }
+    .work-inner { max-width: 1280px; margin: 0 auto; }
+    .work-header { text-align: center; margin-bottom: 64px; }
+    .work-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(44px, 4.5vw, 64px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.08;
+      color: var(--charcoal);
+    }
+    .work-sub {
+      font-size: 17px;
+      color: var(--warm-mid);
+      line-height: 1.7;
+      max-width: 520px;
+      margin: 16px auto 0;
+    }
+
+    /* Featured card */
+    .featured-card {
+      background: white;
+      border-radius: 24px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      margin-bottom: 28px;
+      box-shadow: 0 2px 6px rgba(28,25,23,0.04), 0 12px 36px rgba(28,25,23,0.07);
+      transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+    .featured-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 4px 8px rgba(28,25,23,0.04), 0 28px 56px rgba(28,25,23,0.11);
+    }
+    .featured-img {
+      position: relative;
+      overflow: hidden;
+      min-height: 380px;
+      background: #1E3D68;
+    }
+    .featured-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+      opacity: 0.72;
+      transition: transform 0.6s cubic-bezier(0.16,1,0.3,1), opacity 0.6s ease;
+    }
+    .featured-card:hover .featured-img img {
+      transform: scale(1.04);
+      opacity: 0.8;
+    }
+    .featured-img-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, transparent 0%, rgba(30,61,104,0.25) 100%);
+    }
+    .real-client-badge {
+      position: absolute;
+      top: 24px; left: 24px;
+      background: var(--gold);
+      color: var(--charcoal);
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .featured-content {
+      padding: 52px 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .featured-type {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #1E3D68;
+      margin-bottom: 14px;
+    }
+    .featured-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: 38px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.12;
+      color: var(--charcoal);
+      margin-bottom: 14px;
+    }
+    .featured-desc {
+      font-size: 15px;
+      color: var(--warm-mid);
+      line-height: 1.75;
+      margin-bottom: 28px;
+    }
+
+    /* Tag pills */
+    .tag {
+      display: inline-block;
+      padding: 5px 14px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      margin: 3px;
+    }
+
+    /* Case study link */
+    .cs-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      letter-spacing: -0.01em;
+      transition: gap 0.25s cubic-bezier(0.16,1,0.3,1), opacity 0.2s ease;
+      margin-top: 8px;
+    }
+    .cs-link:hover { gap: 14px; }
+    .cs-link:focus-visible { outline: 3px solid currentColor; outline-offset: 3px; border-radius: 4px; }
+
+    /* Project cards grid */
+    .proj-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+    .proj-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(28,25,23,0.04), 0 8px 24px rgba(28,25,23,0.06);
+      transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+    .proj-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 4px 8px rgba(28,25,23,0.04), 0 28px 52px rgba(28,25,23,0.11);
+    }
+    .proj-img {
+      position: relative;
+      overflow: hidden;
+      height: 240px;
+    }
+    .proj-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+      opacity: 0.78;
+      transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
+    }
+    .proj-card:hover .proj-img img { transform: scale(1.05); }
+    .proj-img-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.35) 100%);
+    }
+    .proj-body { padding: 32px; }
+    .proj-type {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .proj-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      color: var(--charcoal);
+      margin-bottom: 10px;
+    }
+    .proj-desc {
+      font-size: 14px;
+      color: var(--warm-mid);
+      line-height: 1.72;
+      margin-bottom: 20px;
+    }
+    .proj-tags { margin-bottom: 20px; }
+
+    /* ======== CONTACT ======== */
+    #contact {
+      padding: 120px 48px;
+      background: linear-gradient(140deg, #F7EFE8 0%, #EDE3D8 100%);
+    }
+    .contact-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .contact-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(44px, 4.5vw, 64px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.08;
+      color: var(--charcoal);
+      margin-bottom: 20px;
+    }
+    .contact-lead {
+      font-size: 16px;
+      color: var(--warm-mid);
+      line-height: 1.8;
+      max-width: 420px;
+      margin-bottom: 40px;
+    }
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      text-decoration: none;
+      color: var(--charcoal);
+      margin-bottom: 16px;
+    }
+    .contact-item:focus-visible { outline: 3px solid rgba(224,107,110,0.5); outline-offset: 3px; border-radius: 8px; }
+    .contact-icon-wrap {
+      width: 50px;
+      height: 50px;
+      background: white;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 14px rgba(28,25,23,0.08);
+      flex-shrink: 0;
+    }
+    .contact-item-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--warm-light);
+      margin-bottom: 3px;
+    }
+    .contact-item-val {
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    /* Form */
+    .form-card {
+      background: white;
+      border-radius: 24px;
+      padding: 44px;
+      box-shadow: 0 8px 44px rgba(28,25,23,0.08), 0 2px 6px rgba(28,25,23,0.03);
+    }
+    .form-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 30px;
+      font-weight: 700;
+      color: var(--charcoal);
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+    .form-card p { font-size: 14px; color: var(--warm-light); margin-bottom: 32px; line-height: 1.6; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--warm-mid); margin-bottom: 7px; }
+    .form-input {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1.5px solid rgba(28,25,23,0.1);
+      border-radius: 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      color: var(--charcoal);
+      background: #FDFAF8;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+    .form-input:focus {
+      border-color: var(--coral);
+      box-shadow: 0 0 0 3px rgba(224,107,110,0.12);
+      background: white;
+    }
+    .form-input::placeholder { color: var(--warm-light); }
+    textarea.form-input { resize: vertical; min-height: 120px; }
+
+    /* ======== FOOTER ======== */
+    footer {
+      background: linear-gradient(145deg, #3D2832 0%, #2A1E22 100%);
+      padding: 64px 48px 32px;
+    }
+    .footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 56px;
+      margin-bottom: 48px;
+    }
+    .footer-logo { height: 44px; width: auto; filter: brightness(0) invert(1); opacity: 0.85; margin-bottom: 16px; display: block; }
+    .footer-tagline { font-size: 14px; color: rgba(255,255,255,0.42); line-height: 1.7; max-width: 240px; }
+    .footer-col-title { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 18px; }
+    .footer-link { display: block; color: rgba(255,255,255,0.62); font-size: 14px; text-decoration: none; margin-bottom: 10px; transition: color 0.2s ease; }
+    .footer-link:hover { color: white; }
+    .footer-link:focus-visible { outline: 2px solid rgba(255,255,255,0.4); outline-offset: 2px; border-radius: 3px; }
+    .footer-divider { height: 1px; background: rgba(255,255,255,0.07); margin-bottom: 28px; }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+    .footer-copy { font-size: 13px; color: rgba(255,255,255,0.3); }
+    .social-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.13);
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      transition: background 0.2s ease, transform 0.25s cubic-bezier(0.16,1,0.3,1), color 0.2s ease;
+    }
+    .social-btn:hover { background: rgba(255,255,255,0.16); color: white; transform: translateY(-3px); }
+    .social-btn:focus-visible { outline: 3px solid rgba(255,255,255,0.35); outline-offset: 2px; }
+
+    /* ======== RESPONSIVE ======== */
+    @media (max-width: 1024px) {
+      #nav { padding: 16px 28px; }
+      #home { padding: 100px 28px 70px; }
+      .hero-inner { grid-template-columns: 1fr; gap: 56px; }
+      .hero-photo-wrap { max-width: 440px; margin: 0 auto; }
+      #about { padding: 100px 28px; }
+      .about-inner { grid-template-columns: 1fr; gap: 48px; }
+      .about-photo { max-width: 380px; }
+      #work { padding: 100px 28px; }
+      .featured-card { grid-template-columns: 1fr; }
+      .featured-img { min-height: 280px; }
+      .proj-grid { grid-template-columns: 1fr; }
+      #contact { padding: 100px 28px; }
+      .contact-inner { grid-template-columns: 1fr; gap: 56px; }
+      footer { padding: 56px 28px 28px; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+    }
+
+    @media (max-width: 640px) {
+      #nav { padding: 14px 20px; }
+      .nav-links { display: none; }
+      #home { padding: 90px 20px 60px; }
+      .hero-heading { font-size: 52px; }
+      .hero-stats { gap: 20px; }
+      .hero-badge { right: 0; }
+      #about { padding: 80px 20px; }
+      #work { padding: 80px 20px; }
+      .work-header { margin-bottom: 44px; }
+      .featured-content { padding: 32px 28px; }
+      .featured-heading { font-size: 28px; }
+      .proj-body { padding: 24px; }
+      #contact { padding: 80px 20px; }
+      .form-card { padding: 28px 24px; }
+      .form-row { grid-template-columns: 1fr; }
+      footer { padding: 48px 20px 24px; }
+      .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+    }
+
+    /* Mobile nav hamburger */
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--charcoal); border-radius: 2px; transition: transform 0.3s ease, opacity 0.3s ease; }
+    @media (max-width: 640px) { .hamburger { display: flex; } }
+
+    #mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(254,252,251,0.98);
+      z-index: 499;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 44px;
+    }
+    #mobile-menu.open { display: flex; }
+    #mobile-menu a {
+      font-family: 'Playfair Display', serif;
+      font-size: 40px;
+      font-weight: 600;
+      color: var(--charcoal);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+      transition: color 0.2s ease;
+    }
+    #mobile-menu a:hover { color: var(--coral); }
+  </style>
+</head>
+
+<body>
+
+<!-- MOBILE MENU -->
+<div id="mobile-menu" role="dialog" aria-label="Navigation menu">
+  <a href="#home" onclick="closeMobileMenu()">Home</a>
+  <a href="#about" onclick="closeMobileMenu()">About</a>
+  <a href="#work" onclick="closeMobileMenu()">Work</a>
+  <a href="#contact" onclick="closeMobileMenu()">Contact</a>
+</div>
+
+<!-- ===== NAV ===== -->
+<nav id="nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="#home" aria-label="Maria Førli Design — Home">
+      <img src="brand_assets/Maria F;rli Design logo.png" alt="Maria Førli Design" class="nav-logo">
+    </a>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#work">Work</a>
+      <a href="#contact">Contact</a>
+      <a href="mailto:maria.forli@gmail.com" class="btn-coral" style="padding:10px 22px; font-size:13px;">Hire Me</a>
+    </div>
+    <button class="hamburger" onclick="toggleMobileMenu()" aria-label="Open menu" aria-expanded="false" id="hamburger-btn">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section id="home" aria-label="Introduction">
+  <div class="blob1" aria-hidden="true"></div>
+  <div class="blob2" aria-hidden="true"></div>
+
+  <div class="hero-inner">
+    <!-- Left -->
+    <div>
+      <div class="sec-label fade-up">UI Designer &middot; Based in Norway</div>
+
+      <h1 class="hero-heading fade-up d1">
+        Hi, I'm<br>
+        <span class="grad-text">Maria Førli</span>
+      </h1>
+
+      <p class="hero-sub fade-up d2">
+        Creating clean, joyful, and accessible digital experiences. I turn complex ideas into designs that feel beautiful and effortless to use.
+      </p>
+
+      <div style="display:flex; gap:16px; flex-wrap:wrap;" class="fade-up d3">
+        <a href="#work" class="btn-coral">See My Work &rarr;</a>
+        <a href="#about" class="btn-ghost">About Me</a>
+      </div>
+
+      <div class="hero-stats fade-up d4" aria-label="Quick facts">
+        <div>
+          <div class="hero-stat-num">5</div>
+          <div class="hero-stat-label">Projects</div>
+        </div>
+        <div class="hero-stat-divider" aria-hidden="true"></div>
+        <div>
+          <div class="hero-stat-num">10+</div>
+          <div class="hero-stat-label">Years of empathy</div>
+        </div>
+        <div class="hero-stat-divider" aria-hidden="true"></div>
+        <div>
+          <div class="hero-stat-num">1</div>
+          <div class="hero-stat-label">Real client</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Photo -->
+    <div class="hero-photo-wrap fade-up d2">
+      <div class="hero-photo-bg" aria-hidden="true"></div>
+      <div class="hero-photo-img">
+        <img src="brand_assets/mpic.png" alt="Maria Førli, UI Designer">
+        <div class="hero-photo-overlay" aria-hidden="true"></div>
+      </div>
+      <div class="hero-badge" aria-hidden="true">
+        <div class="hero-badge-title">Noroff Graduate</div>
+        <div class="hero-badge-sub">UI Design &middot; 2025</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section id="about" aria-label="About Maria">
+  <div class="a-blob" aria-hidden="true"></div>
+  <div class="a-blob2" aria-hidden="true"></div>
+
+  <div class="about-inner">
+    <!-- Left: content -->
+    <div>
+      <div class="sec-label gold fade-up">About Me</div>
+
+      <h2 class="font-display fade-up d1" style="font-size:clamp(40px,4vw,58px); font-weight:700; letter-spacing:-0.03em; line-height:1.1; color:white; margin-bottom:28px;">
+        Design with<br>heart &amp; purpose
+      </h2>
+
+      <p class="about-body fade-up d2">
+        I'm a fresh UI design graduate from Noroff, all about creating clean, accessible, and user-friendly designs. I love playing with color and imagery to build experiences that are <strong>joyful and motivating</strong>.
+      </p>
+      <p class="about-body fade-up d2">
+        Before this career change, I spent <strong>10 wonderful years as a kindergarten teacher</strong> — which gave me deep empathy, patience, and clear communication skills that translate directly into great UI design. When I'm not designing, I'm with my two daughters and fiancé, enjoying nature walks, jogging, kayaking, or reading.
+      </p>
+
+      <div class="fade-up d3" style="margin-top:32px;">
+        <div style="font-size:11px; font-weight:700; letter-spacing:0.13em; text-transform:uppercase; color:rgba(255,255,255,0.35); margin-bottom:14px;">Skills &amp; Tools</div>
+        <div>
+          <span class="skill-chip">UI Design</span>
+          <span class="skill-chip">Brand Identity</span>
+          <span class="skill-chip">Design Systems</span>
+          <span class="skill-chip">Figma</span>
+          <span class="skill-chip">Prototyping</span>
+          <span class="skill-chip">Logo Design</span>
+          <span class="skill-chip">Usability Testing</span>
+          <span class="skill-chip">Accessibility</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: photo + contact -->
+    <div class="fade-up d2">
+      <div class="about-photo">
+        <img src="brand_assets/mpic.png" alt="Maria Førli">
+      </div>
+
+      <div style="margin-top:24px;">
+        <a href="mailto:maria.forli@gmail.com" class="contact-row">
+          <span class="contact-row-icon" aria-hidden="true">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          </span>
+          maria.forli@gmail.com
+        </a>
+        <a href="tel:+4745257834" class="contact-row">
+          <span class="contact-row-icon" aria-hidden="true">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.948V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+          </span>
+          +47 452 57 834
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WORK ===== -->
+<section id="work" aria-label="Portfolio projects">
+  <div class="work-inner">
+
+    <div class="work-header fade-up">
+      <div class="sec-label" style="justify-content:center;">Selected Projects</div>
+      <h2 class="work-title">My Work</h2>
+      <p class="work-sub">Five projects spanning brand identity, UI design, design systems, and logo design.</p>
+    </div>
+
+    <!-- FEATURED: Flassabekken Barnehage — real client -->
+    <div class="featured-card fade-up" role="article" aria-label="Flassabekken Barnehage project">
+      <div class="featured-img">
+        <img src="pdf_previews/flassabekken-1.png" alt="Flassabekken Barnehage case study preview">
+        <div class="featured-img-overlay" aria-hidden="true"></div>
+        <div class="real-client-badge" aria-label="Real client project">&#9733; Real Client</div>
+      </div>
+      <div class="featured-content">
+        <div class="featured-type">Logo Design &middot; 5 Weeks</div>
+        <h3 class="featured-heading">Flassabekken Barnehage</h3>
+        <p class="featured-desc">
+          A real-world client project — I designed a brand-new logo for a Norwegian kindergarten reflecting their vision: <em>"better together."</em> Delivered across 5 weeks with regular client feedback sessions. Now live on all their signage, print materials, and digital channels.
+        </p>
+        <div style="margin-bottom:28px;">
+          <span class="tag" style="background:rgba(30,61,104,0.08);color:#1E3D68;">Logo Design</span>
+          <span class="tag" style="background:rgba(30,61,104,0.08);color:#1E3D68;">Brand Guide</span>
+          <span class="tag" style="background:rgba(30,61,104,0.08);color:#1E3D68;">Client Work</span>
+          <span class="tag" style="background:rgba(232,184,106,0.22);color:#7A5810;">Figma</span>
+        </div>
+        <a href="projects/Flassabekken Barnehage.pdf" target="_blank" rel="noopener" class="cs-link" style="color:#1E3D68;" aria-label="View Flassabekken Barnehage case study PDF">
+          View Case Study &rarr;
+        </a>
+      </div>
+    </div>
+
+    <!-- 2×2 grid -->
+    <div class="proj-grid">
+
+      <!-- Native Woodland Trust -->
+      <div class="proj-card fade-up" role="article" aria-label="Native Woodland Trust project">
+        <div class="proj-img" style="background:#2E5A3D;">
+          <img src="pdf_previews/nwt-1.png" alt="Native Woodland Trust case study preview">
+          <div class="proj-img-overlay" aria-hidden="true"></div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-type" style="color:#2E5A3D;">Exam Project &middot; 7 Weeks</div>
+          <h3 class="proj-title">Native Woodland Trust</h3>
+          <p class="proj-desc">Full UI design lifecycle for an Irish environmental nonprofit — new logo, brand style guide, Android app design, comprehensive design system, and usability testing with data analysis.</p>
+          <div class="proj-tags">
+            <span class="tag" style="background:rgba(46,90,61,0.09);color:#2E5A3D;">Android App</span>
+            <span class="tag" style="background:rgba(46,90,61,0.09);color:#2E5A3D;">Design System</span>
+            <span class="tag" style="background:rgba(46,90,61,0.09);color:#2E5A3D;">Brand Identity</span>
+          </div>
+          <a href="projects/Native Woodland Trust portfolio.pdf" target="_blank" rel="noopener" class="cs-link" style="color:#2E5A3D;" aria-label="View Native Woodland Trust case study PDF">View Case Study &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Solar Smart -->
+      <div class="proj-card fade-up d1" role="article" aria-label="Solar Smart project">
+        <div class="proj-img" style="background:#B84A08;">
+          <img src="pdf_previews/solar-1.png" alt="Solar Smart case study preview">
+          <div class="proj-img-overlay" aria-hidden="true"></div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-type" style="color:#B84A08;">Exam Project &middot; 4 Weeks</div>
+          <h3 class="proj-title">Solar Smart</h3>
+          <p class="proj-desc">Complete brand and digital experience for a renewable energy company — new logo, brand style guide, three-page website design, and a full design system for consistent, scalable development.</p>
+          <div class="proj-tags">
+            <span class="tag" style="background:rgba(184,74,8,0.09);color:#B84A08;">Brand Identity</span>
+            <span class="tag" style="background:rgba(184,74,8,0.09);color:#B84A08;">Web Design</span>
+            <span class="tag" style="background:rgba(184,74,8,0.09);color:#B84A08;">Design System</span>
+          </div>
+          <a href="projects/Solar Smart Portfolio.pdf" target="_blank" rel="noopener" class="cs-link" style="color:#B84A08;" aria-label="View Solar Smart case study PDF">View Case Study &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Nor Møbler -->
+      <div class="proj-card fade-up d2" role="article" aria-label="Nor Møbler project">
+        <div class="proj-img" style="background:#264672;">
+          <img src="pdf_previews/normobler-1.png" alt="Nor Møbler case study preview">
+          <div class="proj-img-overlay" aria-hidden="true"></div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-type" style="color:#264672;">Module Assignment &middot; 1 Week</div>
+          <h3 class="proj-title">Nor Møbler</h3>
+          <p class="proj-desc">E-commerce product page, marketing landing page, and data-rich analytics dashboard for a Norwegian furniture brand — plus a detailed usability report covering all design decisions.</p>
+          <div class="proj-tags">
+            <span class="tag" style="background:rgba(38,70,114,0.09);color:#264672;">E-Commerce</span>
+            <span class="tag" style="background:rgba(38,70,114,0.09);color:#264672;">Dashboard</span>
+            <span class="tag" style="background:rgba(38,70,114,0.09);color:#264672;">UI Design</span>
+          </div>
+          <a href="projects/Nor Møbler Portfolio.pdf" target="_blank" rel="noopener" class="cs-link" style="color:#264672;" aria-label="View Nor Møbler case study PDF">View Case Study &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Hopeful Hounds -->
+      <div class="proj-card fade-up d3" role="article" aria-label="Hopeful Hounds project">
+        <div class="proj-img" style="background:#944C0C;">
+          <img src="pdf_previews/hounds-1.png" alt="Hopeful Hounds case study preview">
+          <div class="proj-img-overlay" aria-hidden="true"></div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-type" style="color:#944C0C;">Course Assignment &middot; 1 Week</div>
+          <h3 class="proj-title">Hopeful Hounds</h3>
+          <p class="proj-desc">Fully interactive website prototype for a dog adoption organization — homepage, dog category page, and contact page with hover effects, page transitions, and a custom-coded favicon.</p>
+          <div class="proj-tags">
+            <span class="tag" style="background:rgba(148,76,12,0.09);color:#944C0C;">Prototype</span>
+            <span class="tag" style="background:rgba(148,76,12,0.09);color:#944C0C;">UI Design</span>
+            <span class="tag" style="background:rgba(148,76,12,0.09);color:#944C0C;">Figma</span>
+          </div>
+          <a href="projects/Hopeful Hounds.pdf" target="_blank" rel="noopener" class="cs-link" style="color:#944C0C;" aria-label="View Hopeful Hounds case study PDF">View Case Study &rarr;</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section id="contact" aria-label="Contact Maria">
+  <div class="contact-inner">
+
+    <!-- Left -->
+    <div>
+      <div class="sec-label fade-up">Get in Touch</div>
+      <h2 class="contact-heading fade-up d1">Let's<br>Connect</h2>
+      <p class="contact-lead fade-up d2">
+        As a newly graduated UI designer, I'm excited to explore opportunities to create user-centered designs. I'd love to hear about your project!
+      </p>
+
+      <div class="fade-up d3">
+        <a href="mailto:maria.forli@gmail.com" class="contact-item">
+          <div class="contact-icon-wrap" aria-hidden="true">
+            <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#E06B6E" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          </div>
+          <div>
+            <div class="contact-item-label">Email</div>
+            <div class="contact-item-val">maria.forli@gmail.com</div>
+          </div>
+        </a>
+
+        <a href="tel:+4745257834" class="contact-item">
+          <div class="contact-icon-wrap" aria-hidden="true">
+            <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#E06B6E" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.948V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+          </div>
+          <div>
+            <div class="contact-item-label">Phone</div>
+            <div class="contact-item-val">+47 452 57 834</div>
+          </div>
+        </a>
+
+        <a href="#" class="contact-item" aria-label="LinkedIn profile">
+          <div class="contact-icon-wrap" aria-hidden="true">
+            <svg width="22" height="22" fill="#E06B6E" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+          </div>
+          <div>
+            <div class="contact-item-label">LinkedIn</div>
+            <div class="contact-item-val">Maria Førli</div>
+          </div>
+        </a>
+
+        <a href="#" class="contact-item" aria-label="Instagram profile">
+          <div class="contact-icon-wrap" aria-hidden="true">
+            <svg width="22" height="22" fill="#E06B6E" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </div>
+          <div>
+            <div class="contact-item-label">Instagram</div>
+            <div class="contact-item-val">@mariaforlidesign</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Right: Form -->
+    <div class="form-card fade-up d2">
+      <h3>Send a Message</h3>
+      <p>I typically reply within 24 hours.</p>
+
+      <form id="contact-form" onsubmit="handleSubmit(event)" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fname">First Name</label>
+            <input type="text" id="fname" name="fname" placeholder="Jane" class="form-input" autocomplete="given-name">
+          </div>
+          <div class="form-group">
+            <label for="lname">Last Name</label>
+            <input type="text" id="lname" name="lname" placeholder="Doe" class="form-input" autocomplete="family-name">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="jane@example.com" class="form-input" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label for="subject">Subject</label>
+          <input type="text" id="subject" name="subject" placeholder="Project inquiry" class="form-input">
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Tell me about your project..." class="form-input"></textarea>
+        </div>
+        <button type="submit" class="btn-coral" id="submit-btn" style="width:100%; justify-content:center; padding:15px 28px; font-size:15px;">
+          Send Message &rarr;
+        </button>
+      </form>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-grid">
+
+      <!-- Brand -->
+      <div>
+        <img src="brand_assets/Maria F;rli Design logo.png" alt="Maria Førli Design" class="footer-logo">
+        <p class="footer-tagline">Creating clean, joyful, and accessible digital experiences from Norway.</p>
+      </div>
+
+      <!-- Navigation -->
+      <div>
+        <div class="footer-col-title">Navigation</div>
+        <a href="#home" class="footer-link">Home</a>
+        <a href="#about" class="footer-link">About</a>
+        <a href="#work" class="footer-link">Work</a>
+        <a href="#contact" class="footer-link">Contact</a>
+      </div>
+
+      <!-- Projects -->
+      <div>
+        <div class="footer-col-title">Projects</div>
+        <a href="projects/Flassabekken Barnehage.pdf" target="_blank" rel="noopener" class="footer-link">Flassabekken Barnehage</a>
+        <a href="projects/Native Woodland Trust portfolio.pdf" target="_blank" rel="noopener" class="footer-link">Native Woodland Trust</a>
+        <a href="projects/Solar Smart Portfolio.pdf" target="_blank" rel="noopener" class="footer-link">Solar Smart</a>
+        <a href="projects/Nor Møbler Portfolio.pdf" target="_blank" rel="noopener" class="footer-link">Nor Møbler</a>
+        <a href="projects/Hopeful Hounds.pdf" target="_blank" rel="noopener" class="footer-link">Hopeful Hounds</a>
+      </div>
+
+    </div>
+
+    <div class="footer-divider" aria-hidden="true"></div>
+
+    <div class="footer-bottom">
+      <div class="footer-copy">&copy; 2025 Maria Førli Design. All rights reserved.</div>
+      <div style="display:flex; gap:10px;" role="list" aria-label="Social links">
+        <a href="#" class="social-btn" aria-label="LinkedIn" role="listitem">
+          <svg width="17" height="17" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+        </a>
+        <a href="#" class="social-btn" aria-label="Instagram" role="listitem">
+          <svg width="17" height="17" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </a>
+        <a href="mailto:maria.forli@gmail.com" class="social-btn" aria-label="Email Maria" role="listitem">
+          <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Nav scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+  }, { passive: true });
+
+  // Intersection observer: fade-up
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+
+  // Mobile menu
+  function toggleMobileMenu() {
+    const menu = document.getElementById('mobile-menu');
+    const btn = document.getElementById('hamburger-btn');
+    const open = menu.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open);
+  }
+  function closeMobileMenu() {
+    document.getElementById('mobile-menu').classList.remove('open');
+    document.getElementById('hamburger-btn').setAttribute('aria-expanded', 'false');
+  }
+
+  // Form submit
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    btn.textContent = 'Message Sent! ✓';
+    btn.style.background = '#2E5A3D';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.innerHTML = 'Send Message &rarr;';
+      btn.style.background = '';
+      btn.disabled = false;
+      e.target.reset();
+    }, 3500);
+  }
+
+  // Trigger fade-up for elements already in viewport on load
+  window.addEventListener('load', () => {
+    document.querySelectorAll('.fade-up:not(.in)').forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight) el.classList.add('in');
+    });
+  });
+</script>
+
+</body>
+</html>

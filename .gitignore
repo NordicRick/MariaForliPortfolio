@@ -1,0 +1,23 @@
+# Node
+node_modules/
+
+# Lockfiles
+package-lock.json
+yarn.lock
+
+# OS
+.DS_Store
+
+# Env & editor
+.env
+.vscode/
+
+# Logs
+*.log
+
+# Build
+dist/
+build/
+
+# Misc
+.sass-cache/
