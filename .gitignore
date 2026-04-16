@@ -1,23 +1,19 @@
-# Node
+# Node and project
 node_modules/
+dist/
+build/
+.DS_Store
+.env
+.vscode/
+*.log
 
-# Lockfiles
+# npm/Yarn
 package-lock.json
 yarn.lock
 
-# OS
+# macOS
 .DS_Store
 
-# Env & editor
-.env
-.vscode/
-
-# Logs
-*.log
-
-# Build
-dist/
-build/
-
-# Misc
-.sass-cache/
+# PDFs and large assets (optional)
+# pdf_previews/
+# projects/
