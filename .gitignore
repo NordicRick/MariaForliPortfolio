@@ -17,6 +17,6 @@ yarn.lock
 #PDFs and large assets (optional)
 #pdf_previews/
 projects/
-screenshot.mjs
-serve.mjs
-CLAUDE.md 
+.screenshot.mjs
+.serve.mjs
+.CLAUDE.md 
